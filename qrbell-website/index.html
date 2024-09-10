@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Doorbell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .doorbell-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .doorbell-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        label[for="img"] {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background-color: #7288f2;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        label[for="img"]:hover {
+            background-color: #5670c9;
+        }
+
+        .ring-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #7288f2;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ring-button:hover {
+            background-color: #45a049;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: vertical;
+            /* Allows vertical resizing */
+            overflow-y: auto;
+            /* Scrollbar if content exceeds height */
+            word-wrap: break-word;
+            /* Ensures long words break correctly */
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="doorbell-box">
+        <h2>Sean's Doorbell</h2>
+        <p>He's probably listening to music, oblivious to your presence. Which is why you're here!</p>
+        <form>
+            <textarea placeholder="Enter your message (optional)" rows="4"></textarea>
+            <input type="file" accept="image/*" id="img" style="display:none;" />
+            <label for="img">Click to add an image, if you want</label>
+            <button class="ring-button" type="submit">Ring</button>
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const fileInput = document.getElementById('img');
+    const label = document.querySelector('label[for="img"]');
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            label.textContent = "Image Uploaded: " + fileInput.files[0].name;
+        } else {
+            label.textContent = "Click to add an image, if you want";
+        }
+    });
+</script>
+
+<script>
+    const ringButton = document.querySelector('.ring-button');
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const message = e.target[0].value;
+        const image = e.target[1].files[0];
+
+        console.log(image)
+    });
+</script>
