@@ -144,18 +144,19 @@
         if (image) {
             formData.append('image', image);
         }
-        fetch('http://127.0.0.1:5000/ring', {
+        fetch('https://qrbell-server.vercel.app/ring', {
             method: 'POST',
             body: formData
         }).then(response => {
             if (response.ok) {
-                alert('Doorbell rang successfully!');
                 return response.json();
-            } else {
-                alert('Failed to ring the doorbell. Please try again later.');
             }
         }).then(data => {
-            console.log(data)
+            if (data.success) {
+                alert('Doorbell rang successfully!');
+            } else {
+                alert('Error ringing the doorbell: ' + data.message);
+            }
         }).catch(error => {
             console.error('Error:', error);
             alert('Error ringing the doorbell.');
