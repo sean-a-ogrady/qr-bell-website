@@ -91,6 +91,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            touch-action: manipulation;
         }
 
         .ring-button:hover {
@@ -132,35 +133,39 @@
     const ringButton = document.querySelector('.ring-button');
     const form = document.querySelector('form');
 
-    form.addEventListener('submit', function (e) {
+    document.querySelector('.ring-button').addEventListener('click', function (e) {
         e.preventDefault();
 
-        const message = e.target[0].value ? e.target[0].value : 'You have a visitor!';
-        const image = e.target[1].files[0] ? e.target[1].files[0] : null;
+        const message = form[0].value ? form[0].value : 'You have a visitor!';
+        const image = form[1].files[0] ? form[1].files[0] : null;
         console.log(message, image);
+
         const formData = new FormData();
         formData.append('message', message);
-        // Only append the image if a file is selected
+
         if (image) {
             formData.append('image', image);
         }
+
         fetch('https://qrbell-server.vercel.app/ring', {
             method: 'POST',
             body: formData
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-        }).then(data => {
-            if (data.status === 'success') {
-                alert('Doorbell rang successfully!');
-            } else {
-                alert('Error ringing the doorbell: ' + data.message);
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('Error ringing the doorbell.');
-        });
-        ;
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Doorbell rang successfully!');
+                } else {
+                    alert('Error ringing the doorbell: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error ringing the doorbell.');
+            });
     });
 </script>
