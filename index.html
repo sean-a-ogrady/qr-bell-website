@@ -152,8 +152,7 @@
                 return response.json();
             }
         }).then(data => {
-            console.log(data)
-            if (data.success) {
+            if (data.status === 'success') {
                 alert('Doorbell rang successfully!');
             } else {
                 alert('Error ringing the doorbell: ' + data.message);
