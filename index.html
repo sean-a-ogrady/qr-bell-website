@@ -117,27 +117,36 @@
     </div>
 </body>
 
-</html>
-
 <script>
     const fileInput = document.getElementById('img');
     const label = document.querySelector('label[for="img"]');
+    const ringButton = document.querySelector('.ring-button');
+    const form = document.querySelector('form');
+    const MAX_FILE_SIZE = 2.5 * 1024 * 1024; // 2.5 MB
 
     fileInput.addEventListener('change', function () {
         if (fileInput.files.length > 0) {
-            label.textContent = "Image Uploaded: " + fileInput.files[0].name;
+            const file = fileInput.files[0];
+
+            // Check if the file exceeds the size limit
+            if (file.size > MAX_FILE_SIZE) {
+                alert('File is too large! Maximum allowed size is 2.5 MB.');
+                fileInput.value = ''; // Reset the file input
+                label.textContent = "Click to add an image, if you want";
+            } else {
+                label.textContent = "Image Uploaded: " + fileInput.files[0].name;
+            }
         } else {
             label.textContent = "Click to add an image, if you want";
         }
     });
-</script>
 
-<script>
-    const ringButton = document.querySelector('.ring-button');
-    const form = document.querySelector('form');
-
-    document.querySelector('.ring-button').addEventListener('click', function (e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Disable the ring button while processing
+        ringButton.disabled = true;
+        ringButton.textContent = 'Ringing...';
 
         const message = form[0].value ? form[0].value : 'You have a visitor!';
         const image = form[1].files[0] ? form[1].files[0] : null;
@@ -157,6 +166,8 @@
             .then(response => {
                 if (response.ok) {
                     return response.json();
+                } else {
+                    throw new Error('Failed to ring the doorbell.');
                 }
             })
             .then(data => {
@@ -169,6 +180,11 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error ringing the doorbell: ' + error.message);
+            })
+            .finally(() => {
+                // Re-enable the ring button once the response comes back
+                ringButton.disabled = false;
+                ringButton.textContent = 'Ring';
             });
     });
 </script>
